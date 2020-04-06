@@ -1,0 +1,6 @@
+Mon Apr  6 18:17:43 2020 [INFO]function NameI() return suc,find free index, return null
+Mon Apr  6 18:17:43 2020 [INFO]function Create() return succ
+Mon Apr  6 18:17:43 2020 [WARNING]can't find Inode
+Mon Apr  6 18:17:43 2020 [INFO]function Close() return succ
+Mon Apr  6 18:17:43 2020 [INFO]function NameI() return suc,find free index, return null
+Mon Apr  6 18:17:43 2020 [INFO]function Open() return succ
