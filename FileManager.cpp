@@ -660,6 +660,7 @@ Inode* FileManager::MakNode( unsigned int mode )
 	// pInode->i_uid = u.u_uid;
 	// pInode->i_gid = u.u_gid;
 	/* 将目录项写入u.u_dent，随后写入目录文件 */
+
 	this->WriteDir(pInode);
 	return pInode;
 }
@@ -670,15 +671,16 @@ void FileManager::WriteDir( Inode* pInode )
 
 	/* 设置目录项中Inode编号部分 */
 	u.u_dent.m_ino = pInode->i_number;
-
+	
 	/* 设置目录项中pathname分量部分 */
 	for ( int i = 0; i < DirectoryEntry::DIRSIZ; i++ )
 	{
 		u.u_dent.m_name[i] = u.u_dbuf[i];
 	}
-
+	
 	u.u_IOParam.m_Count = DirectoryEntry::DIRSIZ + 4;
 	u.u_IOParam.m_Base = (unsigned char *)&u.u_dent;
+	
 	// u.u_segflg = 1;
 
 	/* 将目录项写入父目录文件 */
@@ -875,6 +877,7 @@ void FileManager::MkNod()
 	pInode = this->MakNode(u.u_arg[1]);
 	if ( NULL == pInode )
 	{
+		getLog().write(Log::WARNING,string("function MkNod() , MakNode return NULL"));
 		return;
 	}
 	/* 所建立是设备文件 */

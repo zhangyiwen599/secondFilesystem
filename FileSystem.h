@@ -35,9 +35,9 @@ public:
 	int		s_fmod;			/* 内存中super block副本被修改标志，意味着需要更新外存对应的Super Block */
 	int		s_ronly;		/* 本文件系统只能读出 */
 	int		s_time;			/* 最近一次更新时间 */
-	int		padding[47];	/* 填充使SuperBlock块大小等于1024字节，占据2个扇区 */
+	int		padding[49];	/* 填充使SuperBlock块大小等于1024字节，占据2个扇区 */
 	//int padding[49];	//由于去掉了锁 填充加2
-	char a[8];
+	
 };
 
 
@@ -57,23 +57,23 @@ public:
 
 	// static const int SUPER_BLOCK_SECTOR_NUMBER = 200;	/* 定义SuperBlock位于磁盘上的扇区号，占据200，201两个扇区。 */
 	
-	static const int SUPER_BLOCK_SECTOR_NUMBER = 1;	/* 不用0号扇区，从1开始 */
+	static const int SUPER_BLOCK_SECTOR_NUMBER = 0;	/* 不用0号扇区，从1开始 */
 
 	static const int ROOTINO = 0;			/* 文件系统根目录外存Inode编号 */
 
 	// 外存inode区 3-127
 	static const int INODE_NUMBER_PER_SECTOR = 8;		/* 外存INode对象长度为64字节，每个磁盘块可以存放512/64 = 8个外存Inode */
-	static const int INODE_ZONE_START_SECTOR = 3;		/* 外存Inode区位于磁盘上的起始扇区号 */
-	static const int INODE_ZONE_SIZE = 128-3  /*1024 - 202*/;	/* 课设为实验性质不需要这么多Inode */	/* 磁盘上外存Inode区占据的扇区数 */
+	static const int INODE_ZONE_START_SECTOR = 2;		/* 外存Inode区位于磁盘上的起始扇区号 */
+	static const int INODE_ZONE_SIZE = 27-2  /*1024 - 202*/;	/* 课设为实验性质不需要这么多Inode */	/* 磁盘上外存Inode区占据的扇区数 */
 
 	// 外存数据区 128-1023
-	static const int DATA_ZONE_START_SECTOR = 128;/*1024*/		/* 数据区的起始扇区号 */
-	static const int DATA_ZONE_END_SECTOR = 1024 - 1/* 18000 - 1 */;	/* 数据区的结束扇区号 */
-	static const int DATA_ZONE_SIZE = 1024 - DATA_ZONE_START_SECTOR;	/* 数据区占据的扇区数量 */
+	static const int DATA_ZONE_START_SECTOR = 27;/*1024*/		/* 数据区的起始扇区号 */
+	static const int DATA_ZONE_END_SECTOR = 1000 - 1/* 18000 - 1 */;	/* 数据区的结束扇区号 */
+	static const int DATA_ZONE_SIZE = 1000 - DATA_ZONE_START_SECTOR;	/* 数据区占据的扇区数量 */
 
 	/* Functions */
 public:
-	/* Constructors */
+	/* Constructors */ 
 	FileSystem();
 	/* Destructors */
 	~FileSystem();

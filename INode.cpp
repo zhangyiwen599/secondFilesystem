@@ -141,10 +141,11 @@ void Inode::WriteI()
 	if( 0 == u.u_IOParam.m_Count)
 	{
 		/* 需要读字节数为零，则返回 */
+		
 		return;
 	}
 
-	while(  u.u_IOParam.m_Count != 0 )
+	while(  u.u_IOParam.m_Count != 0 && User::MY_NOERROR == u.u_error)
 	{
 		lbn = u.u_IOParam.m_Offset / Inode::BLOCK_SIZE;
 		offset = u.u_IOParam.m_Offset % Inode::BLOCK_SIZE;
@@ -173,14 +174,17 @@ void Inode::WriteI()
 		else
 		{
 			/* 写入数据不满一个字符块，先读后写（读出该字符块以保护不需要重写的数据） */
+			
 			pBuf = bufMgr.Bread(bn);
 		}
 
 		/* 缓存中数据的起始写位置 */
 		unsigned char* start = pBuf->b_addr + offset;
 
+		
 		/* 写操作: 从用户目标区拷贝数据到缓冲区 */
-		memcpy(u.u_IOParam.m_Base,start,nbytes);
+		memcpy(start,u.u_IOParam.m_Base,nbytes);
+		
 
 		/* 用传送字节数nbytes更新读写位置 */
 		u.u_IOParam.m_Base += nbytes;
@@ -199,6 +203,7 @@ void Inode::WriteI()
 		else /* 如果缓冲区未写满 */
 		{
 			/* 将缓存标记为延迟写，不急于进行I/O操作将字符块输出到磁盘上 */
+			
 			bufMgr.Bdwrite(pBuf);
 		}
 

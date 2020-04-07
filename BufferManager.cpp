@@ -81,11 +81,15 @@ Buf* BufferManager::GetBlk(int blkno)
 	bp->b_back->b_forw = bp->b_forw;
 	bp->b_forw->b_back = bp->b_back;
 	/* 放入原队列尾部 */
-	bp->b_forw = &this->bFreeList;
-	this->bFreeList.b_back->b_forw = bp;
-	bp->b_back = this->bFreeList.b_back;
-	this->bFreeList.b_back = bp;
+	// bp->b_forw = &this->bFreeList;
+	// this->bFreeList.b_back->b_forw = bp;
+	// bp->b_back = this->bFreeList.b_back;
+	// this->bFreeList.b_back = bp;
 
+	bp->b_back = this->bFreeList.b_back->b_forw;
+	this->bFreeList.b_back->b_forw = bp;
+	bp->b_forw = &this->bFreeList;
+	this->bFreeList.b_back = bp;
 	
 	bp->b_blkno = blkno;
 	//getLog().write(Log::INFO,string("get free buf"));
@@ -221,9 +225,14 @@ void BufferManager::Bflush()
 			bp->b_back->b_forw = bp->b_forw;
 			bp->b_forw->b_back = bp->b_back;
 			/* 放入原队列尾部 */
-			bp->b_forw = &this->bFreeList;
+			// bp->b_forw = &this->bFreeList;
+			// this->bFreeList.b_back->b_forw = bp;
+			// bp->b_back = this->bFreeList.b_back;
+			// this->bFreeList.b_back = bp;
+
+			bp->b_back = this->bFreeList.b_back->b_forw;
 			this->bFreeList.b_back->b_forw = bp;
-			bp->b_back = this->bFreeList.b_back;
+			bp->b_forw = &this->bFreeList;
 			this->bFreeList.b_back = bp;
 
 			this->Bwrite(bp);

@@ -10,7 +10,7 @@
 
 SuperBlock::SuperBlock()
 {
-	strcpy(a,"hahaha");
+	
 	//nothing to do here
 }
 

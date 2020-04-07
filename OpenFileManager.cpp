@@ -154,7 +154,7 @@ Inode* InodeTable::IGet( int inumber)
 			 */
 			
 			pInode->i_count++;
-			pInode->i_flag |= Inode::ILOCK;
+			// pInode->i_flag |= Inode::ILOCK;
 			return pInode;
 		}
 		else	/* 没有Inode的内存拷贝，则分配一个空闲内存Inode */
@@ -175,7 +175,7 @@ Inode* InodeTable::IGet( int inumber)
 				/* 设置新的设备号、外存Inode编号，增加引用计数，对索引节点上锁 */
 				// pInode->i_dev = dev;
 				pInode->i_number = inumber;
-				pInode->i_flag = Inode::ILOCK;
+				// pInode->i_flag = Inode::ILOCK;
 				pInode->i_count++;
 				pInode->i_lastr = -1;
 
@@ -223,7 +223,7 @@ void InodeTable::IPut(Inode *pNode)
 		 * 上锁，因为在整个释放过程中可能因为磁盘操作而使得该进程睡眠，
 		 * 此时有可能另一个进程会对该内存Inode进行操作，这将有可能导致错误。
 		 */
-		pNode->i_flag |= Inode::ILOCK;
+		// pNode->i_flag |= Inode::ILOCK;
 
 		/* 该文件已经没有目录路径指向它 */
 		if(pNode->i_nlink <= 0)
